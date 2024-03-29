@@ -1,10 +1,13 @@
 from typing import Callable
+
 import allure
 import pytest
 from _pytest.fixtures import FixtureRequest
 from coms.qa.fixtures.application import Application
 from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
-from tests.steps import open_auth_form, open_start_page, open_start_page_after_auth, sign_in, open_availability_ehd
+
+from tests.steps import open_auth_form, open_availability_ehd, open_start_page, open_start_page_after_auth, sign_in
+
 
 @allure.label('owner', 't.sadykov')
 @allure.label('component', 'MKR')
@@ -27,4 +30,3 @@ def test_availability_ehd(
     open_start_page_after_auth(app)
 
     open_availability_ehd(app, request)
-

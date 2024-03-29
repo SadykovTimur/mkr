@@ -15,7 +15,7 @@ class AvailabilitySberPage(Page):
     calendar = Component(xpath="//span[text()='Календарь событий']")
     news_line = Component(class_name='news-line')
 
-    def open_data_news(self):
+    def open_data_news(self) -> None:
         self.data_news.wait_for_clickability()
         self.data_news.click()
 
@@ -37,5 +37,5 @@ class AvailabilitySberPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def switch_to_default(self):
+    def switch_to_default(self) -> None:
         self.driver.switch_to.default_content()

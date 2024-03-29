@@ -15,12 +15,11 @@ class SborAvailabilityPage(Page):
     warning_text = Component(xpath="//div[contains(text(),'По запросу новостей не найдено.')]")
     search = Component(class_name="search")
 
-    def open_data_sbor(self):
+    def open_data_sbor(self) -> None:
         self.data_sbor.wait_for_clickability()
         self.data_sbor.click()
 
     def wait_for_loading(self) -> None:
-
         def condition() -> bool:
             try:
                 assert self.news.visible
@@ -35,4 +34,3 @@ class SborAvailabilityPage(Page):
         self.app.set_implicitly_wait(1)
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
-

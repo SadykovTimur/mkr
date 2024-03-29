@@ -18,7 +18,7 @@ class AvailabilityEhdPage(Page):
     main_menu = Component(class_name="mainMenu")
     home_link = Component(class_name="homeLink")
 
-    def open_ehd(self):
+    def open_ehd(self) -> None:
         self.ehd_btn.wait_for_clickability()
         self.ehd_btn.click()
 

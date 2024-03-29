@@ -22,7 +22,7 @@ class ReportsEhdPage(Page):
     toolbar_toptool = Component(id="toolbar_inds")
     toolbar_param = Component(id="dopParam")
 
-    def open_menu(self):
+    def open_menu(self) -> None:
         self.submenu.wait_for_clickability()
         self.submenu.click()
 
@@ -44,7 +44,7 @@ class ReportsEhdPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_report(self):
+    def open_report(self) -> None:
         self.source_sum.wait_for_clickability()
         self.source_sum.click()
 

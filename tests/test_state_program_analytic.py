@@ -1,10 +1,20 @@
 from typing import Callable
+
 import allure
 import pytest
 from _pytest.fixtures import FixtureRequest
 from coms.qa.fixtures.application import Application
 from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
-from tests.steps import open_auth_form, open_start_page, open_start_page_after_auth, sign_in, open_state_program_availability, open_state_program_analytic
+
+from tests.steps import (
+    open_auth_form,
+    open_start_page,
+    open_start_page_after_auth,
+    open_state_program_analytic,
+    open_state_program_availability,
+    sign_in,
+)
+
 
 @allure.label('owner', 't.sadykov')
 @allure.label('component', 'MKR')
@@ -29,5 +39,3 @@ def test_state_program_analytic(
     open_state_program_availability(app)
 
     open_state_program_analytic(app)
-
-

@@ -5,6 +5,7 @@ from coms.qa.frontend.pages import Page
 from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.button import Button
 from selenium.common.exceptions import NoSuchElementException
+
 from dit.qa.pages.arm_lead_detail_page.components.problem_card import ProblemCards
 
 __all__ = ['ArmLeadDetailPage']
@@ -45,7 +46,7 @@ class ArmLeadDetailPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_complex(self):
+    def open_complex(self) -> None:
         complete = self.complex_bth.wait_for_clickability()
         complete.click()
 
@@ -65,7 +66,7 @@ class ArmLeadDetailPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_gp_title(self):
+    def open_gp_title(self) -> None:
         gp_title = self.gp_btn.wait_for_clickability()
         gp_title.click()
 

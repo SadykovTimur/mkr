@@ -15,7 +15,7 @@ class StateProgramAvailabilityPage(Page):
     calendar = Component(xpath="//span[text()='Календарь событий']")
     news_line = Component(class_name='news-line')
 
-    def open_monitoring(self):
+    def open_monitoring(self) -> None:
         self.monitoring_control.wait_for_clickability()
         self.monitoring_control.click()
 
@@ -37,5 +37,5 @@ class StateProgramAvailabilityPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def switch_to_default(self):
+    def switch_to_default(self) -> None:
         self.driver.switch_to.default_content()

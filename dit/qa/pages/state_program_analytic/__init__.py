@@ -31,12 +31,11 @@ class StateProgramAnalyticPage(Page):
     lid_gp_events = Component(id="lid_gp_21011897")
     lid_gp_finance = Component(id="lid_gp_21011919")
 
-    def open_report(self):
+    def open_report(self) -> None:
         self.monitoring_control.wait_for_clickability()
         self.monitoring_control.click()
 
     def wait_for_loading(self) -> None:
-
         def condition() -> bool:
             try:
                 assert self.program_text.visible
@@ -53,13 +52,12 @@ class StateProgramAnalyticPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_state_program(self):
+    def open_state_program(self) -> None:
         self.app.move_to_element(self.analytic.webelement)
         self.state_program_btn.wait_for_clickability()
         self.state_program_btn.click()
 
     def wait_for_loading_state_program(self) -> None:
-
         def condition() -> bool:
             try:
                 assert self.state_program_update.visible
@@ -76,7 +74,7 @@ class StateProgramAnalyticPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_period(self):
+    def open_period(self) -> None:
         self.period_btn.wait_for_clickability()
         self.period_btn.click()
         self.data_btn.wait_for_clickability()
@@ -99,7 +97,7 @@ class StateProgramAnalyticPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_state_table(self):
+    def open_state_table(self) -> None:
         self.apply_btn.wait_for_clickability()
         self.apply_btn.click()
 

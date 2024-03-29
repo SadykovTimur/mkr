@@ -1,8 +1,6 @@
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 from coms.qa.frontend.pages.component.button import Button
-from coms.qa.frontend.pages.component.text import Text
-
 from coms.qa.frontend.pages.component.text_field import TextField
 from selenium.common.exceptions import NoSuchElementException
 

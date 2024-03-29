@@ -1,10 +1,19 @@
 from typing import Callable
+
 import allure
 import pytest
 from _pytest.fixtures import FixtureRequest
 from coms.qa.fixtures.application import Application
 from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
-from tests.steps import open_auth_form, open_start_page, open_start_page_after_auth, sign_in, open_availability_sber, open_sber_object
+
+from tests.steps import (
+    open_auth_form,
+    open_availability_sber,
+    open_sber_object,
+    open_start_page,
+    open_start_page_after_auth,
+    sign_in,
+)
 
 
 @allure.label('owner', 't.sadykov')
@@ -30,5 +39,3 @@ def test_sber_object(
     open_availability_sber(app)
 
     open_sber_object(app)
-
-

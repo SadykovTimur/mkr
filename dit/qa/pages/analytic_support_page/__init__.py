@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages import Page
 from coms.qa.frontend.pages.component import Component
@@ -21,7 +20,7 @@ class AnalyticSupportPage(Page):
     grid_container = Component(id="gridOutput")
     body_content = Component(class_name="grid-body-content")
 
-    def open_analytic(self):
+    def open_analytic(self) -> None:
         self.app.move_to_element(self.menu_analytic.webelement)
         self.analytics.click()
 
@@ -40,7 +39,7 @@ class AnalyticSupportPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_social_report(self):
+    def open_social_report(self) -> None:
         self.apply_btn.click()
 
     def wait_for_loading_social_report(self) -> None:
@@ -60,5 +59,3 @@ class AnalyticSupportPage(Page):
         self.app.set_implicitly_wait(1)
         wait_for(condition, timeout=60, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
-
-

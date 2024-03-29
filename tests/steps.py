@@ -1,25 +1,24 @@
 import allure
+from _pytest.fixtures import FixtureRequest
 from coms.qa.fixtures.application import Application
 from coms.qa.frontend.helpers.attach_helper import screenshot_attach
 from selenium.common.exceptions import NoSuchElementException
 
-from _pytest.fixtures import FixtureRequest
-from dit.qa.pages.start_page import StartPage
-from dit.qa.pages.auto_page import AutoPage
+from dit.qa.pages.analytic_support_page import AnalyticSupportPage
 from dit.qa.pages.analytics_reports import ReportsPage
-from dit.qa.pages.availability_page_old import AvailabilityOldPage
-from dit.qa.pages.availability_page_new import AvailabilityNewPage
 from dit.qa.pages.arm_lead_detail_page import ArmLeadDetailPage
+from dit.qa.pages.auto_page import AutoPage
+from dit.qa.pages.availability_ehd_page import AvailabilityEhdPage
+from dit.qa.pages.availability_page_new import AvailabilityNewPage
+from dit.qa.pages.availability_page_old import AvailabilityOldPage
 from dit.qa.pages.availability_sber_page import AvailabilitySberPage
+from dit.qa.pages.availability_support_page import AvailabilitySupportPage
+from dit.qa.pages.reports_ehd_page import ReportsEhdPage
 from dit.qa.pages.sber_object_page import SberObjectPage
 from dit.qa.pages.sbor_availability_page import SborAvailabilityPage
-from dit.qa.pages.state_program_availability_page import StateProgramAvailabilityPage
+from dit.qa.pages.start_page import StartPage
 from dit.qa.pages.state_program_analytic import StateProgramAnalyticPage
-from dit.qa.pages.availability_ehd_page import AvailabilityEhdPage
-from dit.qa.pages.reports_ehd_page import ReportsEhdPage
-from dit.qa.pages.availability_support_page import AvailabilitySupportPage
-from dit.qa.pages.analytic_support_page import AnalyticSupportPage
-
+from dit.qa.pages.state_program_availability_page import StateProgramAvailabilityPage
 
 __all__ = [
     'open_start_page',
@@ -29,8 +28,7 @@ __all__ = [
     'open_analytics_page',
     'open_analytics_reports',
     'open_availability_hand_new',
-    'open_availability_hand_old'
-
+    'open_availability_hand_old',
 ]
 
 
