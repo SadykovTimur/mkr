@@ -1,0 +1,6 @@
+name: 'Доступность АРМ Рука Старый'
+cmd: 'pytest --alluredir={allure_reports_path} tests/test_availability_hand_old.py'
+steps:
+  - 'Открытие стартовой страницы'
+  - 'Авторизация пользователя'
+  - 'Вход в подсистему "АРМ Руководителя Старый"'
