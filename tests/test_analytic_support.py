@@ -12,6 +12,7 @@ from tests.steps import (
     open_availability_support,
     open_main_page,
     open_start_page,
+    show_analytic_report,
     sign_in,
 )
 
@@ -39,3 +40,5 @@ def test_analytic_support(
     open_availability_support(app)
 
     open_analytic_support(app)
+
+    show_analytic_report(app)

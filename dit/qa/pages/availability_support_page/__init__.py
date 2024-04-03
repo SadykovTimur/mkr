@@ -19,6 +19,11 @@ class AvailabilitySupportPage(Page):
     news = Components(class_name='news-line-item ')
     iframe = Component(tag='iframe')
     footer = Component(class_name="the-footer")
+    analytics = Button(id="sub_main_menu")
+
+    def open_analytic(self) -> None:
+        self.app.move_to_element(self.header.items_analytics.webelement)
+        self.analytics.click()
 
     def wait_for_loading(self) -> None:
         self.driver.switch_to.frame(self.iframe.webelement)

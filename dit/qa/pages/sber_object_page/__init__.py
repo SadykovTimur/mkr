@@ -16,7 +16,7 @@ class SberObjectPage(Page):
     header = Header(class_name="header")
     breadcrumbs = Text(css='[class="ui-breadcrumb"] ')
     settings_panel = SettingsPanel(css='[class*="ui-panel--allocated"]')
-    object_panel = ObjectPanel(css='[class="ui-panel object-list ui-panel--collapse"]')
+    object_panel = ObjectPanel(css='[class*="object-list "]')
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
@@ -30,7 +30,7 @@ class SberObjectPage(Page):
                 return False
 
         self.app.set_implicitly_wait(1)
-        wait_for(condition, msg='Page was not loaded')
+        wait_for(condition, msg='Page page was not loaded')
         self.app.restore_implicitly_wait()
 
     def wait_for_loading_object(self) -> None:
@@ -47,5 +47,5 @@ class SberObjectPage(Page):
                 return False
 
         self.app.set_implicitly_wait(1)
-        wait_for(condition, msg='Page was not loaded')
+        wait_for(condition, msg='Object was not loaded')
         self.app.restore_implicitly_wait()

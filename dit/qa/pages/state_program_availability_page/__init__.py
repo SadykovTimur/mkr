@@ -13,12 +13,17 @@ __all__ = ['StateProgramAvailabilityPage']
 
 
 class StateProgramAvailabilityPage(Page):
-    main_menu = Header(id="main-menu")
+    header = Header(id="main-menu")
     news_filter = Component(class_name="news-filter")
     news = Components(class_name='news-line-item ')
     breadcrumbs = Text(id="breadcrumbs-menu")
     iframe = Component(tag='iframe')
     footer = Component(class_name="the-footer")
+    state_program_btn = Button(xpath='//a[text()="	Актуализация государственных программ"]')
+
+    def open_state_program(self) -> None:
+        self.app.move_to_element(self.header.items_analytica.webelement)
+        self.state_program_btn.click()
 
     def wait_for_loading(self) -> None:
         self.driver.switch_to.frame(self.iframe.webelement)
@@ -43,14 +48,15 @@ class StateProgramAvailabilityPage(Page):
     def wait_for_loading_header(self) -> None:
         def condition() -> bool:
             try:
-                assert self.main_menu.items_news.visible
-                assert self.main_menu.items_data.visible
-                assert self.main_menu.items_analytica.visible
-                assert self.main_menu.items_service.visible
-                assert self.main_menu.title == 'ИАС МКР'
-                assert self.main_menu.logo.visible
-                assert self.main_menu.name == 'Вершинин А. Ю.'
-                assert self.main_menu.login == 'FTest'
+                assert self.header.items_news.visible
+                assert self.header.items_data.visible
+                assert self.header.items_analytica.visible
+                assert self.header.items_service.visible
+                assert self.header.title == 'ИАС МКР'
+                assert self.header.logo.visible
+                assert self.header.name == 'Вершинин А. Ю.'
+                assert self.header.login == 'FTest'
+                assert "Госпрограммы" in self.breadcrumbs
 
                 return "Новости" in self.breadcrumbs
 

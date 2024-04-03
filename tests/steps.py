@@ -8,16 +8,16 @@ from dit.qa.pages.analytic_support_page import AnalyticSupportPage
 from dit.qa.pages.analytics_page import AnalyticsPage
 from dit.qa.pages.analytics_reports_page import AnalyticReportsPage
 from dit.qa.pages.availability_ehd_page import AvailabilityEhdPage
-from dit.qa.pages.availability_page_new import AvailabilityNewPage
+from dit.qa.pages.availability_new_page import AvailabilityNewPage
 from dit.qa.pages.availability_sber_page import AvailabilitySberPage
 from dit.qa.pages.availability_support_page import AvailabilitySupportPage
 from dit.qa.pages.main_page import MainPage
-from dit.qa.pages.reports_ehd_page import ReportsEhdPage
 from dit.qa.pages.sber_object_page import SberObjectPage
 from dit.qa.pages.sbor_availability_page import SborAvailabilityPage
 from dit.qa.pages.start_page import StartPage
-from dit.qa.pages.state_program_analytic import StateProgramAnalyticPage
+from dit.qa.pages.state_program_analytic_page import StateProgramAnalyticPage
 from dit.qa.pages.state_program_availability_page import StateProgramAvailabilityPage
+from dit.qa.pages.state_program_report_page import StateProgramReportPage
 
 __all__ = [
     'open_start_page',
@@ -31,6 +31,18 @@ __all__ = [
     'open_main_page',
     'open_problem_details',
     'open_state_program_analytic_report',
+    'open_analytic_support',
+    'open_availability_support',
+    'show_analytic_report',
+    'open_availability_ehd',
+    'open_availability_sber',
+    'open_reports_ehd',
+    'open_sber_objects_section',
+    'show_sber_objects',
+    'open_sbor_availability',
+    'open_state_program_analytic',
+    'open_state_program_availability',
+    'show_state_program_analytic',
 ]
 
 
@@ -180,9 +192,8 @@ def open_state_program_availability(app: Application) -> None:
 def open_state_program_analytic(app: Application) -> None:
     with allure.step('Opening State program analytic'):
         try:
-            page_analytic = StateProgramAnalyticPage(app)
-            page_analytic.open_state_program()
-            page_analytic.wait_for_loading_state_program()
+            StateProgramAvailabilityPage(app).open_state_program()
+            StateProgramAnalyticPage(app).wait_for_loading()
 
             screenshot_attach(app, 'state program analytic')
         except Exception as e:
@@ -198,6 +209,7 @@ def show_state_program_analytic(app: Application) -> None:
             page.settings_panel.period_btn.click()
             page.data_btn.click()
             page.wait_for_loading_state_program_table()
+
             page.settings_panel.show_btn.click()
             page.wait_for_loading_state_table()
 
@@ -211,9 +223,8 @@ def show_state_program_analytic(app: Application) -> None:
 def open_state_program_analytic_report(app: Application) -> None:
     with allure.step('Opening State program analytic report'):
         try:
-            page_analytic = StateProgramAnalyticPage(app)
-            page_analytic.monitoring_control.click()
-            page_analytic.wait_for_loading()
+            StateProgramAvailabilityPage(app).header.items_data.click()
+            StateProgramReportPage(app).wait_for_loading()
 
             screenshot_attach(app, 'state program analytic report')
         except Exception as e:
@@ -243,9 +254,10 @@ def open_availability_ehd(app: Application, request: FixtureRequest) -> None:
 def open_reports_ehd(app: Application) -> None:
     with allure.step('Opening Reports ehd'):
         try:
-            page_ehd = ReportsEhdPage(app)
+            page_ehd = AvailabilityEhdPage(app)
             page_ehd.menu.submenu.click()
-            page_ehd.wait_for_loading()
+            page_ehd.wait_for_loading_submenu()
+
             page_ehd.menu.source_sum.click()
             page_ehd.wait_for_loading_report()
 
@@ -274,17 +286,28 @@ def open_availability_support(app: Application) -> None:
 def open_analytic_support(app: Application) -> None:
     with allure.step('Opening Analytic support'):
         try:
-            page = AnalyticSupportPage(app)
-            page.open_analytic()
-            page.wait_for_loading()
-            page.settings_panel.apply_btn.click()
-            page.wait_for_loading_social_report()
+            AvailabilitySupportPage(app).open_analytic()
+            AnalyticSupportPage(app).wait_for_loading()
 
             screenshot_attach(app, 'analytic_support')
         except Exception as e:
             screenshot_attach(app, 'analytic_support_error')
 
             raise TimeoutError('Analytic support was not loaded') from e
+
+
+def show_analytic_report(app: Application) -> None:
+    with allure.step('Show analytic report'):
+        try:
+            page = AnalyticSupportPage(app)
+            page.settings_panel.apply_btn.click()
+            page.wait_for_loading_social_report()
+
+            screenshot_attach(app, 'analytic_report')
+        except Exception as e:
+            screenshot_attach(app, 'analytic_report_error')
+
+            raise TimeoutError('Analytic report was not loaded') from e
 
 
 def open_sber_objects_section(app: Application) -> None:

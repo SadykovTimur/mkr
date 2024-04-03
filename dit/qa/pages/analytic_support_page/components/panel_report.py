@@ -1,11 +1,11 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
-from coms.qa.frontend.pages.component.button import Button
 
 __all__ = ['PanelReport']
 
 
 class PanelReportWrapper(ComponentWrapper):
     body_content = Component(class_name="grid-body-content")
+    title = Component(css='[title="Отчет по мерам социальной поддержки "]')
 
 
 class PanelReport(Component):

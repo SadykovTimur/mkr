@@ -3,12 +3,11 @@ from __future__ import annotations
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages import Page
 from coms.qa.frontend.pages.component import Component
-from coms.qa.frontend.pages.component.button import Button
 from selenium.common.exceptions import NoSuchElementException
 
-from dit.qa.pages.availability_page_new.components.header import Header
-from dit.qa.pages.availability_page_new.components.problem_card import ProblemCards
-from dit.qa.pages.availability_page_new.components.problem_details import ProblemDetails
+from dit.qa.pages.availability_new_page.components.header import Header
+from dit.qa.pages.availability_new_page.components.problem_card import ProblemCards
+from dit.qa.pages.availability_new_page.components.problem_details import ProblemDetails
 
 __all__ = ['AvailabilityNewPage']
 

@@ -1,14 +1,14 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 
-__all__ = ['MainMenuWrapper']
+__all__ = ['MainMenu']
 
 
 class MainMenuWrapper(ComponentWrapper):
     news = Component(id="menu_news")
     manage = Component(id="menu_manage")
     office = Component(id="menu_office")
-    reps_info = Component(css='[onmouseover="getHtmlRepsInfo()"]')
-    docs_info = Component(css='[onmouseover="getHtmlDocsInfo()"]')
+    reps_info = Component(id="menu_ser_report")
+    docs_info = Component(id="menu_docs")
     gor = Component(id="menu_gor")
 
 

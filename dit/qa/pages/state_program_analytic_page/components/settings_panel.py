@@ -1,7 +1,7 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 from coms.qa.frontend.pages.component.button import Button
 
-__all__ = ['SettingsPanelWrapper']
+__all__ = ['SettingsPanel']
 
 
 class SettingsPanelWrapper(ComponentWrapper):

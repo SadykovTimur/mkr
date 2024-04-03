@@ -1,16 +1,14 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 from coms.qa.frontend.pages.component.button import Button
-from coms.qa.frontend.pages.component.text import Text
 
-__all__ = ['SubMainMenuWrapper']
+__all__ = ['SubMainMenu']
 
 
 class SubMainMenuWrapper(ComponentWrapper):
     submenu = Button(xpath="//b[text()='Агентство по страхованию вкладов']")
     source_sum = Button(xpath="//span[text()='Сумма вкладов '] ")
-    toolbar = Text(xpath="//span[text()='Агентство по страхованию вкладов']")
-    main_submenu = Component(id="mainSubmenuContent")
-    source_blank = Component(id="lind_source_tree_400_1")
+    toolbar = Component(xpath="//span[text()='Агентство по страхованию вкладов']")
+    source_blank = Component(xpath="//span[text()='Сумма вкладов ']")
     source_deposits = Component(xpath="//span[text()='Возмещение по вкладам и страховая ответственность ']")
     source_insured_deposits = Component(xpath="//span[text()='Средний размер застрахованного вклада ']")
 

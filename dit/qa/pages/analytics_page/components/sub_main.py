@@ -1,7 +1,7 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 from coms.qa.frontend.pages.component.button import Button
 
-__all__ = ['SubMainWrapper']
+__all__ = ['SubMain']
 
 
 class SubMainWrapper(ComponentWrapper):

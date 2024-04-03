@@ -11,20 +11,20 @@ __all__ = ['SborAvailabilityPage']
 
 
 class SborAvailabilityPage(Page):
-    content = Header(id="h-content")
+    header = Header(id="h-content")
     news = Component(xpath="//h1[text()='Новости']")
-    warning_text = Component(xpath="//div[contains(text(),'По запросу новостей не найдено.')]")
+    warning_text = Component(css="[class='empty-report']")
     search = Component(class_name="search")
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
             try:
-                assert self.content.logo.visible
-                assert self.content.user_name.visible
-                assert self.content.user_menu.visible
-                assert self.content.registry_menu.visible
-                assert self.content.import_menu.visible
-                assert self.content.report_menu.visible
+                assert self.header.logo.visible
+                assert self.header.user_name.visible
+                assert self.header.user_menu.visible
+                assert self.header.registry_menu.visible
+                assert self.header.import_menu.visible
+                assert self.header.report_menu.visible
 
                 assert self.news.visible
                 assert self.warning_text.visible
