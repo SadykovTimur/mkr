@@ -6,26 +6,31 @@ from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.button import Button
 from selenium.common.exceptions import NoSuchElementException
 
+from dit.qa.pages.availability_page_new.components.header import Header
+from dit.qa.pages.availability_page_new.components.problem_card import ProblemCards
+from dit.qa.pages.availability_page_new.components.problem_details import ProblemDetails
+
 __all__ = ['AvailabilityNewPage']
 
 
 class AvailabilityNewPage(Page):
-    arm_lead = Button(xpath="//span[contains(text(),'АРМ Руководителя')]")
-    arm_text = Component(xpath="//span[text()='ИАС МКР | АРМ РУКОВОДИТЕЛЯ'] ")
-    profile = Component(xpath="//div[text()='Александр Юрьевич Вершинин']")
-    filter = Component(class_name='ui-page-sidebar-content__control')
-    container = Component(class_name='tile-container ')
-    page_tabs = Component(css="[class='ui-page-tabs-header'] ")
+    header = Header(class_name='ui-app-header')
+    filter = Component(css='[class*="el-options "]')
+    problems = ProblemCards(css='[class*="tile__problem"]')
+    page_tabs = Component(class_name='ui-page-tabs-header')
+    problem_details = ProblemDetails(css="[class*='el-problem-details']")
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
             try:
-                assert self.arm_text.visible
-                assert self.profile.visible
+                assert self.header.arm_text == 'ИАС МКР | АРМ РУКОВОДИТЕЛЯ'
+                assert self.header.profile == 'АЛЕКСАНДР ЮРЬЕВИЧ ВЕРШИНИН'
+                assert self.header.logo.visible
+
                 assert self.filter.visible
                 assert self.page_tabs.visible
 
-                return self.container.visible
+                return self.problems[0].visible
 
             except NoSuchElementException:
 

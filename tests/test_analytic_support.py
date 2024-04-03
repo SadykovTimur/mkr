@@ -10,8 +10,8 @@ from tests.steps import (
     open_analytic_support,
     open_auth_form,
     open_availability_support,
+    open_main_page,
     open_start_page,
-    open_start_page_after_auth,
     sign_in,
 )
 
@@ -34,7 +34,7 @@ def test_analytic_support(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_availability_support(app)
 

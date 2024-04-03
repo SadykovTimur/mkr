@@ -4,45 +4,46 @@ from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages import Page
 from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.button import Button
+from coms.qa.frontend.pages.component.text import Text
 from selenium.common.exceptions import NoSuchElementException
+
+from dit.qa.pages.state_program_analytic.components.header import Header
+from dit.qa.pages.state_program_analytic.components.main import Main
+from dit.qa.pages.state_program_analytic.components.settings_panel import SettingsPanel
 
 __all__ = ['StateProgramAnalyticPage']
 
 
 class StateProgramAnalyticPage(Page):
-    monitoring_control = Button(css='[href="index.php?show=report_edit"]')
-    analytic = Component(css='[href="index.php?show=history"]')
-    program_text = Component(xpath="//span[text()='Программы и подпрограммы']")
-    collection_report = Component(xpath="//div[text()='Сбор отчетности']")
-    edit_panel = Component(id="c_editPanel")
-    tree_panel = Component(id="c_treePanel")
-    state_program_btn = Button(css='[href="index.php?show=actual_gp"]')
-    state_program_update = Component(id="phdTitle")
-    state_program_actual = Component(id="c_treePanel")
-    state_program = Component(id="c_treePanel")
-    state_program_actual_text = Component(xpath="//div[contains(text(),'Актуализация государственных программ')]")
-    period_btn = Button(id="did_period")
+    header = Header(id="h-content")
+    settings_panel = SettingsPanel(id="c_settingsPanel")
+    breadcrumbs = Text(id="breadcrumbs-menu")
+    monitoring_control = Button(xpath="//a[text()='Сбор отчетности']")
+    main = Main(id="main-content")
+    state_program_btn = Button(xpath='//a[text()="	Актуализация государственных программ"]')
     data_btn = Button(id="lid_period_19809342")
-    apply_btn = Button(xpath='(//div[@id="btn_apply"])[1]')
     grid_table = Component(class_name="grid-table-wrap")
     grid_header = Component(class_name="grid-corner-header ")
-    params = Component(id="paramsOutput")
-    lid_gp_transport = Component(id="lid_gp_23796647")
-    lid_gp_events = Component(id="lid_gp_21011897")
-    lid_gp_finance = Component(id="lid_gp_21011919")
-
-    def open_report(self) -> None:
-        self.monitoring_control.wait_for_clickability()
-        self.monitoring_control.click()
+    gp_name_1 = Component(xpath="//span[text()='01.05.003.003']")
+    gp_name_2 = Component(xpath="//span[text()='01.05.005.006']")
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
             try:
-                assert self.program_text.visible
-                assert self.collection_report.visible
-                assert self.edit_panel.visible
+                assert self.header.items_news.visible
+                assert self.header.items_data.visible
+                assert self.header.items_analytica.visible
+                assert self.header.items_service.visible
+                assert self.header.title == 'ИАС МКР'
+                assert self.header.logo.visible
+                assert self.header.name == 'Вершинин А. Ю.'
+                assert self.header.login == 'FTest'
 
-                return self.tree_panel.visible
+                assert "Сбор отчетности" in self.breadcrumbs
+                assert "Программы и подпрограммы" in self.main.program_text
+                assert self.main.editPanel.visible
+
+                return self.main.treePanel.visible
 
             except NoSuchElementException:
 
@@ -53,18 +54,27 @@ class StateProgramAnalyticPage(Page):
         self.app.restore_implicitly_wait()
 
     def open_state_program(self) -> None:
-        self.app.move_to_element(self.analytic.webelement)
-        self.state_program_btn.wait_for_clickability()
+        self.app.move_to_element(self.header.items_analytica.webelement)
         self.state_program_btn.click()
 
     def wait_for_loading_state_program(self) -> None:
         def condition() -> bool:
             try:
-                assert self.state_program_update.visible
-                assert self.state_program_actual.visible
-                assert self.state_program.visible
+                assert self.header.items_news.visible
+                assert self.header.items_data.visible
+                assert self.header.items_analytica.visible
+                assert self.header.items_service.visible
+                assert self.header.title == 'ИАС МКР'
+                assert self.header.logo.visible
+                assert self.header.name == 'Вершинин А. Ю.'
+                assert self.header.login == 'FTest'
 
-                return self.state_program_actual_text.visible
+                assert "Аналитика" in self.breadcrumbs
+                assert self.main.repPanel.visible
+                assert "Актуализация государственных программ" in self.breadcrumbs
+                assert "Государственные программы" in self.main.state_program
+
+                return "Актуализация государственных программ" in self.main.state_program_update
 
             except NoSuchElementException:
 
@@ -74,20 +84,12 @@ class StateProgramAnalyticPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_period(self) -> None:
-        self.period_btn.wait_for_clickability()
-        self.period_btn.click()
-        self.data_btn.wait_for_clickability()
-        self.data_btn.click()
-
-    def wait_for_loading_period(self) -> None:
+    def wait_for_loading_state_program_table(self) -> None:
         def condition() -> bool:
             try:
-                assert self.params.visible
-                assert self.lid_gp_events.visible
-                assert self.lid_gp_finance.visible
+                assert self.gp_name_1.visible
 
-                return self.lid_gp_transport.visible
+                return self.gp_name_2.visible
 
             except NoSuchElementException:
 
@@ -96,10 +98,6 @@ class StateProgramAnalyticPage(Page):
         self.app.set_implicitly_wait(1)
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
-
-    def open_state_table(self) -> None:
-        self.apply_btn.wait_for_clickability()
-        self.apply_btn.click()
 
     def wait_for_loading_state_table(self) -> None:
         def condition() -> bool:

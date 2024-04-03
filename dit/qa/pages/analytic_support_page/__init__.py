@@ -6,19 +6,21 @@ from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.button import Button
 from selenium.common.exceptions import NoSuchElementException
 
+from dit.qa.pages.analytic_support_page.components.panel_report import PanelReport
+from dit.qa.pages.analytic_support_page.components.settings_panel import SettingsPanel
+
 __all__ = ['AnalyticSupportPage']
 
 
 class AnalyticSupportPage(Page):
-    menu_analytic = Component(css='[href="index.php?show=rep_01"]')
+    settings_panel = SettingsPanel(id="c_settingsPanel")
+    menu_analytic = Component(xpath="//a[text()='Аналитика']")
     analytics = Button(id="sub_main_menu")
-    panel_control = Component(xpath="//span[text()='Показатели']")
-    panel_header = Component(xpath="//span[text()='Параметры и фильтры']")
-    apply_btn = Button(id="btn_apply")
-    panel_report = Component(id="c_repPanel")
+    panel_control = Component(id="c_poksPanel")
+    panel_text = Component(xpath="//span[text()='Показатели']")
+    panel_report = PanelReport(id="c_repPanel")
     title = Component(css='[title="Отчет по мерам социальной поддержки "]')
     grid_container = Component(id="gridOutput")
-    body_content = Component(class_name="grid-body-content")
 
     def open_analytic(self) -> None:
         self.app.move_to_element(self.menu_analytic.webelement)
@@ -28,8 +30,10 @@ class AnalyticSupportPage(Page):
         def condition() -> bool:
             try:
                 assert self.panel_control.visible
+                assert self.panel_text.visible
+                assert self.settings_panel.visible
 
-                return self.panel_header.visible
+                return self.settings_panel.title.visible
 
             except NoSuchElementException:
 
@@ -39,18 +43,15 @@ class AnalyticSupportPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_social_report(self) -> None:
-        self.apply_btn.click()
-
     def wait_for_loading_social_report(self) -> None:
         def condition() -> bool:
             try:
                 assert self.panel_report.visible
                 assert self.title.visible
-                assert self.body_content.visible
+                assert self.panel_report.body_content.visible
                 assert self.grid_container.visible
 
-                return self.panel_header.visible
+                return self.settings_panel.visible
 
             except NoSuchElementException:
 

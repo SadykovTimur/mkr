@@ -8,10 +8,11 @@ from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
 
 from tests.steps import (
     open_analytics_page,
-    open_analytics_reports,
+    open_analytics_reports_page,
     open_auth_form,
+    open_main_page,
     open_start_page,
-    open_start_page_after_auth,
+    show_analytics_report,
     sign_in,
 )
 
@@ -34,8 +35,9 @@ def test_analytics_reports(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_analytics_page(app)
 
-    open_analytics_reports(app)
+    open_analytics_reports_page(app)
+    show_analytics_report(app)

@@ -9,9 +9,10 @@ from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
 from tests.steps import (
     open_auth_form,
     open_availability_sber,
-    open_sber_object,
+    open_main_page,
+    open_sber_objects_section,
     open_start_page,
-    open_start_page_after_auth,
+    show_sber_objects,
     sign_in,
 )
 
@@ -34,8 +35,9 @@ def test_sber_object(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_availability_sber(app)
 
-    open_sber_object(app)
+    open_sber_objects_section(app)
+    show_sber_objects(app)

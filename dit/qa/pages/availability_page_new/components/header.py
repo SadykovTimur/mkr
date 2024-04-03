@@ -1,13 +1,13 @@
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
-from coms.qa.frontend.pages.component.button import Button
+from coms.qa.frontend.pages.component.text import Text
 
 __all__ = ['Header']
 
 
 class HeaderWrapper(ComponentWrapper):
-    login = Button(class_name='login-button ')
-    logo = Component(class_name='the-header ')
-    profile_name = Component(xpath="//span[text()='Вершинин А. Ю.']")
+    logo = Component(css='[class*="logo__img"]')
+    arm_text = Text(css='[class*="logo__title"]')
+    profile = Text(css='[class*="profile__name"]')
 
 
 class Header(Component):

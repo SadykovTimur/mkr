@@ -7,11 +7,11 @@ from coms.qa.fixtures.application import Application
 from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
 
 from tests.steps import (
-    open_arm_lead_detail,
     open_auth_form,
     open_availability_hand_new,
+    open_main_page,
+    open_problem_details,
     open_start_page,
-    open_start_page_after_auth,
     sign_in,
 )
 
@@ -34,8 +34,8 @@ def test_arm_lead_detail(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_availability_hand_new(app)
 
-    open_arm_lead_detail(app)
+    open_problem_details(app)

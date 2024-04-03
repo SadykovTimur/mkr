@@ -8,10 +8,11 @@ from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
 
 from tests.steps import (
     open_auth_form,
+    open_main_page,
     open_start_page,
-    open_start_page_after_auth,
     open_state_program_analytic,
     open_state_program_availability,
+    show_state_program_analytic,
     sign_in,
 )
 
@@ -34,8 +35,9 @@ def test_state_program_analytic(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_state_program_availability(app)
 
     open_state_program_analytic(app)
+    show_state_program_analytic(app)

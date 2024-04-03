@@ -2,32 +2,30 @@ from __future__ import annotations
 
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages import Page
-from coms.qa.frontend.pages.component import Component
-from coms.qa.frontend.pages.component.button import Button
+from coms.qa.frontend.pages.component import Component, Components
+from coms.qa.frontend.pages.component.text import Text
 from selenium.common.exceptions import NoSuchElementException
+
+from dit.qa.pages.availability_sber_page.components.header import Header
 
 __all__ = ['AvailabilitySberPage']
 
 
 class AvailabilitySberPage(Page):
-    data_news = Button(xpath="//span[contains(text(),'Сбор и актуализация данных по мероприятиям развити')]")
-    filter_calendar = Component(css='[class="news-filter-calendar"]')
-    calendar = Component(xpath="//span[text()='Календарь событий']")
-    news_line = Component(class_name='news-line')
-
-    def open_data_news(self) -> None:
-        self.data_news.wait_for_clickability()
-        self.data_news.click()
+    header = Header(class_name="header")
+    breadcrumbs = Text(class_name='ui-breadcrumb')
+    news_filter = Component(class_name="news-filter")
+    news = Components(class_name='news-line-item ')
+    iframe = Component(tag='iframe')
 
     def wait_for_loading(self) -> None:
-        self.driver.switch_to.frame('news-body__frame')
+        self.driver.switch_to.frame(self.iframe.webelement)
 
         def condition() -> bool:
             try:
-                assert self.filter_calendar.visible
-                assert self.news_line.visible
+                assert self.news_filter.visible
 
-                return self.calendar.visible
+                return self.news[0].visible
 
             except NoSuchElementException:
 
@@ -37,5 +35,24 @@ class AvailabilitySberPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def switch_to_default(self) -> None:
         self.driver.switch_to.default_content()
+
+    def wait_for_loading_header(self) -> None:
+        def condition() -> bool:
+            try:
+                assert self.header.logo.visible
+                assert self.header.title == 'ИАС МКР'
+                assert self.header.arm_data.visible
+                assert self.header.arm_object.visible
+                assert self.header.arm_data_lot.visible
+                assert self.header.name == 'Вершинин А. Ю.'
+
+                return self.header.login == 'FTest'
+
+            except NoSuchElementException:
+
+                return False
+
+        self.app.set_implicitly_wait(1)
+        wait_for(condition, msg='Header was not loaded')
+        self.app.restore_implicitly_wait()

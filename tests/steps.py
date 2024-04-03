@@ -5,14 +5,13 @@ from coms.qa.frontend.helpers.attach_helper import screenshot_attach
 from selenium.common.exceptions import NoSuchElementException
 
 from dit.qa.pages.analytic_support_page import AnalyticSupportPage
-from dit.qa.pages.analytics_reports import ReportsPage
-from dit.qa.pages.arm_lead_detail_page import ArmLeadDetailPage
-from dit.qa.pages.auto_page import AutoPage
+from dit.qa.pages.analytics_page import AnalyticsPage
+from dit.qa.pages.analytics_reports_page import AnalyticReportsPage
 from dit.qa.pages.availability_ehd_page import AvailabilityEhdPage
 from dit.qa.pages.availability_page_new import AvailabilityNewPage
-from dit.qa.pages.availability_page_old import AvailabilityOldPage
 from dit.qa.pages.availability_sber_page import AvailabilitySberPage
 from dit.qa.pages.availability_support_page import AvailabilitySupportPage
+from dit.qa.pages.main_page import MainPage
 from dit.qa.pages.reports_ehd_page import ReportsEhdPage
 from dit.qa.pages.sber_object_page import SberObjectPage
 from dit.qa.pages.sbor_availability_page import SborAvailabilityPage
@@ -24,11 +23,14 @@ __all__ = [
     'open_start_page',
     'open_auth_form',
     'sign_in',
-    'open_start_page_after_auth',
+    'open_start_page',
     'open_analytics_page',
-    'open_analytics_reports',
+    'open_analytics_reports_page',
+    'show_analytics_report',
     'open_availability_hand_new',
-    'open_availability_hand_old',
+    'open_main_page',
+    'open_problem_details',
+    'open_state_program_analytic_report',
 ]
 
 
@@ -37,6 +39,7 @@ def open_start_page(app: Application) -> None:
         try:
             page = StartPage(app)
             page.open()
+            page.wait_for_loading_header()
             page.wait_for_loading()
 
             screenshot_attach(app, 'start_page')
@@ -63,8 +66,11 @@ def open_auth_form(app: Application) -> None:
 def open_analytics_page(app: Application) -> None:
     with allure.step('Opening analytics page'):
         try:
-            page_analytics = AutoPage(app)
-            page_analytics.analytics_page()
+            MainPage(app).open_page("Аналитика по группам расходов")
+
+            page = AnalyticsPage(app)
+            page.wait_for_loading_header()
+            page.wait_for_loading()
 
             screenshot_attach(app, 'analytics_page')
         except Exception as e:
@@ -73,12 +79,11 @@ def open_analytics_page(app: Application) -> None:
             raise TimeoutError('Analytics page was not loaded') from e
 
 
-def open_analytics_reports(app: Application) -> None:
+def open_analytics_reports_page(app: Application) -> None:
     with allure.step('Opening analytics reports'):
         try:
-            page_reports = ReportsPage(app)
-            page_reports.analytics_reports_page()
-            page_reports.wait_for_loading()
+            AnalyticsPage(app).open_analytics_reports_page()
+            AnalyticReportsPage(app).wait_for_loading()
 
             screenshot_attach(app, 'analytics_reports')
         except Exception as e:
@@ -87,28 +92,25 @@ def open_analytics_reports(app: Application) -> None:
             raise TimeoutError('Analytics reports was not loaded') from e
 
 
-def open_availability_hand_old(app: Application) -> None:
-    with allure.step('Opening Availability hand old'):
+def show_analytics_report(app: Application) -> None:
+    with allure.step('Show analytics report'):
         try:
-            page = AvailabilityOldPage(app)
-            page.base_url = 'http://gp.mos.ru/report/'
-            page.open()
-            page.closeBtn.click()
-            page.wait_for_loading()
+            page = AnalyticReportsPage(app)
+            page.settings_panel.show_btn.click()
+            page.wait_for_loading_report()
 
-            screenshot_attach(app, 'availability_hand_old')
+            screenshot_attach(app, 'analytics_report')
         except Exception as e:
-            screenshot_attach(app, 'availability_hand_old_error')
+            screenshot_attach(app, 'analytics_report_error')
 
-            raise TimeoutError('Availability hand old was not loaded') from e
+            raise TimeoutError('Analytics report was not loaded') from e
 
 
 def open_availability_hand_new(app: Application) -> None:
     with allure.step('Opening Availability hand new'):
         try:
-            page_hand_new = AvailabilityNewPage(app)
-            page_hand_new.arm_lead.click()
-            page_hand_new.wait_for_loading()
+            MainPage(app).open_page("АРМ Руководителя")
+            AvailabilityNewPage(app).wait_for_loading()
 
             screenshot_attach(app, 'availability_hand_new')
         except Exception as e:
@@ -117,31 +119,27 @@ def open_availability_hand_new(app: Application) -> None:
             raise TimeoutError('Availability hand new was not loaded') from e
 
 
-def open_arm_lead_detail(app: Application) -> None:
-    with allure.step('Opening Arm lead detail'):
+def open_problem_details(app: Application) -> None:
+    with allure.step('Opening problem details detail'):
         try:
-            page = ArmLeadDetailPage(app)
-            page.problem_cards[0].problem_value.click()
-            page.wait_for_loading()
-            page.open_complex()
-            page.wait_for_loading_complex()
-            page.open_gp_title()
-            page.wait_for_loading_gp_title()
+            page = AvailabilityNewPage(app)
+            page.problems[0].problem_value.click()
+            page.problem_details.wait_for_loading()
 
-            screenshot_attach(app, 'arm_lead_detail')
+            screenshot_attach(app, 'problem_details')
         except Exception as e:
-            screenshot_attach(app, 'arm_lead_detail_error')
+            screenshot_attach(app, 'problem_details_error')
 
-            raise TimeoutError('Arm lead detail was not loaded') from e
+            raise TimeoutError('Problem details was not loaded') from e
 
 
 def open_availability_sber(app: Application) -> None:
     with allure.step('Opening Availability sber'):
         try:
+            MainPage(app).open_page("Сбор и актуализация данных по мероприятиям развития")
             page_sber = AvailabilitySberPage(app)
-            page_sber.open_data_news()
+            page_sber.wait_for_loading_header()
             page_sber.wait_for_loading()
-            page_sber.switch_to_default()
 
             screenshot_attach(app, 'availability_sber')
         except Exception as e:
@@ -153,8 +151,8 @@ def open_availability_sber(app: Application) -> None:
 def open_sbor_availability(app: Application) -> None:
     with allure.step('Opening Sbor availability'):
         try:
+            MainPage(app).open_page("Сбор и актуализация данных  по мероприятиям развития 2011-2013")
             page_sbor = SborAvailabilityPage(app)
-            page_sbor.open_data_sbor()
             page_sbor.wait_for_loading()
 
             screenshot_attach(app, 'sbor_availability')
@@ -167,10 +165,10 @@ def open_sbor_availability(app: Application) -> None:
 def open_state_program_availability(app: Application) -> None:
     with allure.step('Opening state program availability'):
         try:
+            MainPage(app).open_page("Мониторинг и контроль реализации государственных программ")
             page_availability = StateProgramAvailabilityPage(app)
-            page_availability.open_monitoring()
+            page_availability.wait_for_loading_header()
             page_availability.wait_for_loading()
-            page_availability.switch_to_default()
 
             screenshot_attach(app, 'state program')
         except Exception as e:
@@ -183,13 +181,7 @@ def open_state_program_analytic(app: Application) -> None:
     with allure.step('Opening State program analytic'):
         try:
             page_analytic = StateProgramAnalyticPage(app)
-            page_analytic.open_report()
-            page_analytic.wait_for_loading()
             page_analytic.open_state_program()
-            page_analytic.wait_for_loading_state_program()
-            page_analytic.open_period()
-            page_analytic.wait_for_loading_period()
-            page_analytic.open_state_table()
             page_analytic.wait_for_loading_state_program()
 
             screenshot_attach(app, 'state program analytic')
@@ -199,6 +191,37 @@ def open_state_program_analytic(app: Application) -> None:
             raise TimeoutError('State program analytic was not loaded') from e
 
 
+def show_state_program_analytic(app: Application) -> None:
+    with allure.step('Show state program analytic'):
+        try:
+            page = StateProgramAnalyticPage(app)
+            page.settings_panel.period_btn.click()
+            page.data_btn.click()
+            page.wait_for_loading_state_program_table()
+            page.settings_panel.show_btn.click()
+            page.wait_for_loading_state_table()
+
+            screenshot_attach(app, 'state program analytic')
+        except Exception as e:
+            screenshot_attach(app, 'state_program_analytic_error')
+
+            raise TimeoutError('Show state program analytic was not loaded') from e
+
+
+def open_state_program_analytic_report(app: Application) -> None:
+    with allure.step('Opening State program analytic report'):
+        try:
+            page_analytic = StateProgramAnalyticPage(app)
+            page_analytic.monitoring_control.click()
+            page_analytic.wait_for_loading()
+
+            screenshot_attach(app, 'state program analytic report')
+        except Exception as e:
+            screenshot_attach(app, 'state_program_analytic_report_error')
+
+            raise TimeoutError('State program analytic report was not loaded') from e
+
+
 def open_availability_ehd(app: Application, request: FixtureRequest) -> None:
     with allure.step('Opening Availability ehd'):
         if request.config.option.block_urls:
@@ -206,8 +229,8 @@ def open_availability_ehd(app: Application, request: FixtureRequest) -> None:
             app.send_command('Network.enable', {})
 
         try:
+            MainPage(app).open_page("Единое хранилище данных социально-экономических показателей (ЕХД)")
             page_open_ehd = AvailabilityEhdPage(app)
-            page_open_ehd.open_ehd()
             page_open_ehd.wait_for_loading()
 
             screenshot_attach(app, 'availability_ehd')
@@ -221,9 +244,9 @@ def open_reports_ehd(app: Application) -> None:
     with allure.step('Opening Reports ehd'):
         try:
             page_ehd = ReportsEhdPage(app)
-            page_ehd.open_menu()
+            page_ehd.menu.submenu.click()
             page_ehd.wait_for_loading()
-            page_ehd.open_report()
+            page_ehd.menu.source_sum.click()
             page_ehd.wait_for_loading_report()
 
             screenshot_attach(app, 'reports_ehd')
@@ -236,10 +259,10 @@ def open_reports_ehd(app: Application) -> None:
 def open_availability_support(app: Application) -> None:
     with allure.step('Opening Availability support'):
         try:
+            MainPage(app).open_page("Мониторинг реализации мер социальной поддержки")
             page_support = AvailabilitySupportPage(app)
-            page_support.open_menu()
+            page_support.wait_for_loading_header()
             page_support.wait_for_loading()
-            page_support.switch_to_default()
 
             screenshot_attach(app, 'availability_support')
         except Exception as e:
@@ -254,7 +277,7 @@ def open_analytic_support(app: Application) -> None:
             page = AnalyticSupportPage(app)
             page.open_analytic()
             page.wait_for_loading()
-            page.open_social_report()
+            page.settings_panel.apply_btn.click()
             page.wait_for_loading_social_report()
 
             screenshot_attach(app, 'analytic_support')
@@ -264,20 +287,31 @@ def open_analytic_support(app: Application) -> None:
             raise TimeoutError('Analytic support was not loaded') from e
 
 
-def open_sber_object(app: Application) -> None:
-    with allure.step('Opening Sber object form'):
+def open_sber_objects_section(app: Application) -> None:
+    with allure.step('Opening Sber objects section'):
+        try:
+            AvailabilitySberPage(app).header.arm_object.click()
+            SberObjectPage(app).wait_for_loading()
+
+            screenshot_attach(app, 'sber_objects_section')
+        except Exception as e:
+            screenshot_attach(app, 'sber_objects_section_error')
+
+            raise TimeoutError('Sber objects section was not loaded') from e
+
+
+def show_sber_objects(app: Application) -> None:
+    with allure.step('Opening Sber objects'):
         try:
             page_sber = SberObjectPage(app)
-            page_sber.open_object()
-            page_sber.wait_for_loading()
-            page_sber.open_apply()
+            page_sber.settings_panel.apply_btn.click()
             page_sber.wait_for_loading_object()
 
-            screenshot_attach(app, 'sber_object')
+            screenshot_attach(app, 'objects')
         except Exception as e:
-            screenshot_attach(app, 'sber_object_error')
+            screenshot_attach(app, 'objects__error')
 
-            raise TimeoutError('Sber object was not loaded') from e
+            raise TimeoutError('Objects was not loaded') from e
 
 
 def sign_in(app: Application, login: str, password: str) -> None:
@@ -297,13 +331,13 @@ def sign_in(app: Application, login: str, password: str) -> None:
         auth_form.submit.click()
 
 
-def open_start_page_after_auth(app: Application) -> None:
-    with allure.step('Opening Start page'):
+def open_main_page(app: Application) -> None:
+    with allure.step('Opening Main page'):
         try:
-            AutoPage(app).wait_for_loading(True)
+            MainPage(app).wait_for_loading()
 
-            screenshot_attach(app, 'start_page')
+            screenshot_attach(app, 'main_page')
         except Exception as e:
-            screenshot_attach(app, 'start_page_error')
+            screenshot_attach(app, 'main_page_error')
 
-            raise TimeoutError('Start page was not loaded') from e
+            raise TimeoutError('Main page was not loaded') from e

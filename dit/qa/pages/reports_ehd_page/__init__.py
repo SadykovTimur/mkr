@@ -6,35 +6,25 @@ from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.button import Button
 from selenium.common.exceptions import NoSuchElementException
 
+from dit.qa.pages.reports_ehd_page.components.container import Container
+from dit.qa.pages.reports_ehd_page.components.sub_main_menu import SubMainMenu
+
 __all__ = ['ReportsEhdPage']
 
 
 class ReportsEhdPage(Page):
-    submenu = Button(xpath="//b[text()='Агентство по страхованию вкладов']")
-    toolbar = Component(class_name="subToolbar")
-    main_submenu = Component(id="mainSubmenuContent")
-    source_blank = Component(id="lind_source_tree_400_1")
-    source_deposits = Component(id="lind_source_tree_400_2")
-    source_insured_deposits = Component(id="lind_source_tree_400_7")
-    source_sum = Button(id="lind_source_tree_400_13")
-    content_table = Component(id="contentAll_1")
-    content_body = Component(class_name="grid-body-content")
-    toolbar_toptool = Component(id="toolbar_inds")
-    toolbar_param = Component(id="dopParam")
-
-    def open_menu(self) -> None:
-        self.submenu.wait_for_clickability()
-        self.submenu.click()
+    menu = SubMainMenu(class_name="mainSubmenu")
+    container = Container(class_name="mainContainer")
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
             try:
-                assert self.toolbar.visible
-                assert self.main_submenu.visible
-                assert self.source_blank.visible
-                assert self.source_deposits.visible
+                assert "Агентство по страхованию вкладов" in self.menu.toolbar
+                assert self.menu.main_submenu.visible
+                assert self.menu.source_blank.visible
+                assert self.menu.source_deposits.visible
 
-                return self.source_insured_deposits.visible
+                return self.menu.source_insured_deposits.visible
 
             except NoSuchElementException:
 
@@ -44,18 +34,13 @@ class ReportsEhdPage(Page):
         wait_for(condition, msg='Page was not loaded')
         self.app.restore_implicitly_wait()
 
-    def open_report(self) -> None:
-        self.source_sum.wait_for_clickability()
-        self.source_sum.click()
-
     def wait_for_loading_report(self) -> None:
         def condition() -> bool:
             try:
-                assert self.content_table.visible
-                assert self.content_body.visible
-                assert self.toolbar_toptool.visible
+                assert self.container.content_body.visible
+                assert "Вид представления: На первую дату периода; Территория: г. Москва" in self.container.filter
 
-                return self.toolbar_param.visible
+                return "Сумма вкладов, млн руб." in self.container.toolbar_toptool
 
             except NoSuchElementException:
 

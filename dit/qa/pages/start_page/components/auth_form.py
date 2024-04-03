@@ -8,11 +8,11 @@ __all__ = ['AuthForm']
 
 
 class AuthFormWrapper(ComponentWrapper):
-    title = Component(xpath="//div[contains(text(),'Вход в систему')]")
-    login = TextField(css='[placeholder="Логин" ]')
-    password = TextField(css='[placeholder="Пароль" ]')
-    forgot_password = Component(xpath="//a[text()='Забыли пароль?']")
-    submit = Button(css='button.ui-button.login-modal__login-button ')
+    title = Component(xpath="//span[text()='Вход в систему'] ")
+    login = TextField(id="name")
+    password = TextField(id="password")
+    forgot_password = Component(xpath="//span[text()='Забыли пароль?']")
+    submit = Button(xpath="//span[text()='Войти'] ")
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:

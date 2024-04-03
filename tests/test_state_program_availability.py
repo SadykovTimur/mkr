@@ -6,13 +6,7 @@ from _pytest.fixtures import FixtureRequest
 from coms.qa.fixtures.application import Application
 from coms.qa.frontend.constants import CLIENT_BROWSERS, CLIENT_DEVICE_TYPE
 
-from tests.steps import (
-    open_auth_form,
-    open_start_page,
-    open_start_page_after_auth,
-    open_state_program_availability,
-    sign_in,
-)
+from tests.steps import open_auth_form, open_main_page, open_start_page, open_state_program_availability, sign_in
 
 
 @allure.label('owner', 't.sadykov')
@@ -33,6 +27,6 @@ def test_state_program_availability(
     open_auth_form(app)
 
     sign_in(app, request.config.option.username, request.config.option.password)
-    open_start_page_after_auth(app)
+    open_main_page(app)
 
     open_state_program_availability(app)
