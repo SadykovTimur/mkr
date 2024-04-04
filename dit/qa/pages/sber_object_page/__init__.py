@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages import Page
+from coms.qa.frontend.pages.component import Component
 from coms.qa.frontend.pages.component.text import Text
 from selenium.common.exceptions import NoSuchElementException
 
@@ -17,10 +18,19 @@ class SberObjectPage(Page):
     breadcrumbs = Text(css='[class="ui-breadcrumb"] ')
     settings_panel = SettingsPanel(css='[class*="ui-panel--allocated"]')
     object_panel = ObjectPanel(css='[class*="object-list "]')
+    loader = Component(css="[class*='loader']")
+
+    @property
+    def is_loader_hide(self) -> bool:
+        try:
+            return not self.loader.visible
+        except NoSuchElementException:
+            return True
 
     def wait_for_loading(self) -> None:
         def condition() -> bool:
             try:
+                assert self.is_loader_hide
                 assert self.object_panel.object_list.visible
 
                 return self.settings_panel.filter_options.visible
