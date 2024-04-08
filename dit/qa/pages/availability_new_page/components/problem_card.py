@@ -1,4 +1,5 @@
 from typing import List
+
 from coms.qa.frontend.pages.component import Components, ComponentWrapper
 from coms.qa.frontend.pages.component.button import Button
 from coms.qa.frontend.pages.component.text import Text
