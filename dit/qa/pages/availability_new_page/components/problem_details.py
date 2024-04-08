@@ -1,12 +1,13 @@
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
 from selenium.common.exceptions import NoSuchElementException
+from coms.qa.frontend.pages.component.text import Text
 
 __all__ = ['ProblemDetails']
 
 
 class ProblemDetailsWrapper(ComponentWrapper):
-    title = Component(xpath="//strong[text()='Нераспределенные лимиты по адресным перечням'] ")
+    title = Text(tag="strong")
     page_footer = Component(class_name="ui-page-footer")
     total_prefecture = Component(xpath="//div[text()='Итого по префектурам'] ")
     department_housing = Component(xpath="//a[text()='ДЖКХ']")
@@ -15,10 +16,10 @@ class ProblemDetailsWrapper(ComponentWrapper):
     gp = Component(xpath='//div[text()="ГП"]')
     grbs = Component(xpath='//div[text()="ГРБС"]')
 
-    def wait_for_loading(self) -> None:
+    def wait_for_loading(self, name: str) -> None:
         def condition() -> bool:
             try:
-                assert self.title.visible
+                assert self.title == name
                 assert self.total_prefecture.visible
                 assert self.department_health.visible
                 assert self.department_housing.visible

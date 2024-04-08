@@ -135,8 +135,10 @@ def open_problem_details(app: Application) -> None:
     with allure.step('Opening problem details detail'):
         try:
             page = AvailabilityNewPage(app)
-            page.problems[0].problem_value.click()
-            page.problem_details.wait_for_loading()
+            problem = page.problems[0]
+            name = problem.name
+            problem.problem_value.click()
+            page.problem_details.wait_for_loading(name)
 
             screenshot_attach(app, 'problem_details')
         except Exception as e:
