@@ -1,7 +1,7 @@
 from coms.qa.core.helpers import wait_for
 from coms.qa.frontend.pages.component import Component, ComponentWrapper
-from selenium.common.exceptions import NoSuchElementException
 from coms.qa.frontend.pages.component.text import Text
+from selenium.common.exceptions import NoSuchElementException
 
 __all__ = ['ProblemDetails']
 
